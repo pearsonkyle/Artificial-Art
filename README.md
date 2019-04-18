@@ -1,18 +1,39 @@
-# Neural-Nebula
-A deep convolutional generative adversarial network (DCGAN) is trained on pictures of space. Images can be procedurally created from the generative neural network by sampling the latent space. Information on the neural network architecture can be found here: https://arxiv.org/abs/1511.06434
+# Art created with artificial intelligence
+A deep convolutional generative adversarial network (DCGAN) is trained on pictures of art. Fictional machine hallucations are created from the generative neural network by sampling the latent space. Information on the neural network architecture can be found here: https://arxiv.org/abs/1511.06434
 
-![](https://github.com/pearsonkyle/Neural-Nebula/blob/master/nebula.gif)
 
-A video with sound can be found [here](https://www.instagram.com/p/Bv0Vd-tlOwi/)
+![](images/fluidart_animation.gif)
+
+An animated mosaic was created in Python with the pretrained fluid art model below. The video was then uploaded into Unity and further animated with audio responsive effects to control the video playback speed and camera mirroring. A video with sound can be found [here](https://www.youtube.com/watch?v=XFqTV7jrb5k) 
 
 ## Dependencies
 - [Python 3+](https://www.anaconda.com/distribution/)
 - Keras, Tensorflow, Matplotlib, Numpy, PIL, Scikit-learn
 
-## Example
-Clone the repo, cd into the directory, launch iPython and paste the example below 
+## Creating an animated mosaic 
+Load a pretrained model into `animated_mosaic.py` and then run the script. Creating a video will take about 10-30 minutes depending on the length because each frame is rendered individually. The images from the neural network will be saved to a directory called `images/`. Afterwards, a video can be created by stitching the images into a `gif` or `mp4` with `ffmpeg`. For example: 
+
+`ffmpeg -framerate 30 -i "fluidart_%05d.png" -c:v libx264 -pix_fmt yuv420p fluidart.mp4` 
+
+
+## Pre-trained Models
+I have included two pretrained models for people to play with
+
+`generator (space_128_128).h5` will create images like the one below. The images are generated from a latent parameter space of 128 dimensions and the output images will be 128 x 128. This network was trained on images of galaxies from the [NASA image archive](https://images.nasa.gov/). 
+
+![](images/nebula.gif)
+
+`generator (fluid_256_128).h5` is a 256 dimensional model that outputs a 128 x 128 image. The algorithm was trained on pictures of fluid art. 
+
+![](images/fluid_neural.gif)
+
+
+## Train your own model
+1. Download your favorite images to a new directory
+2. Change some parameters below like: `directory`, `name`, `latent_dim`, `epochs`, etc..
+3. Run the code
+
 ```python 
-import tensorflow as tf
 from dcgan import DCGAN, create_dataset
 
 if __name__ == '__main__':
@@ -28,40 +49,12 @@ if __name__ == '__main__':
                     latent_dim=32,
                     name='nebula_32_128')
                     
-    dcgan.train(x_train, epochs=1000, batch_size=32, save_interval=100)
+    dcgan.train(x_train, epochs=10000, batch_size=32, save_interval=100)
 ```
-After it's done training check the `images/` folder for outputs during the training process
-
-## cifar example
-Prior to running the code below you will have to remove the upsampling layers in the GAN ([line 84](https://github.com/pearsonkyle/Neural-Nebula/blob/master/dcgan.py#L84) and [line 95](https://github.com/pearsonkyle/Neural-Nebula/blob/master/dcgan.py#L95) ) in order to preserve the 32 x 32 output resolution of the generator
-```python
-from keras.datasets import cifar10
-from dcgan import DCGAN
-
-if __name__ == '__main__':
-
-    (x_train, y_train), (x_test, y_test) = cifar10.load_data()
-
-    # only birds, then scale images between 0-1
-    x_train = x_train[ (y_train==2).reshape(-1) ] 
-    x_train = x_train/255
-    
-    dcgan = DCGAN(img_rows = x_train[0].shape[0],
-                    img_cols = x_train[0].shape[1],
-                    channels = x_train[0].shape[2], 
-                    latent_dim=128,
-                    name='cifar_128')
-
-    dcgan.train(x_train, epochs=10001, batch_size=32, save_interval=100)
-    
-    dcgan.save_imgs('final') 
-```
-Below is an animation of the training process every 500 training batches. The code above took ~10 minutes to run on a GTX 1070. These are random samples from the generator during training. After just 10 minutes of training you can start to see structure that resembles a bird. There's only so much structure you can get from a 32 x 32 pixel image to begin with... More realistic images can be chosen by evaluating them with the discriminator after generating. 
-
-![](https://github.com/pearsonkyle/Neural-Nebula/blob/master/images/cifar_bird.gif)
+The neural network will create outputs during the training process to the folder: `images/`. This process could take a while depending on your computer. For comparison the two pretrained models used 15000 training epochs which took ~1-2 hours on a GTX 1070. 
 
 ## Creating a custom data set
-The  `create_dataset` function will cut random slices from an images to create a new data set. This function requires you to put images in a new directory before hand
+The  `create_dataset` function will cut random slices from images to create a new data set. This function requires you to put images in a new directory before hand
 ```python
 import matplotlib.pyplot as plt
 import numpy as np
@@ -89,18 +82,7 @@ An example output should look like this:
 
 If `x_train` is empty make sure you have `.jpg` or `.png` files in the directory where your images are stored (e.g. `space/`) 
 
+## Ways to improve images
+If your images are looking bad, try to increase the number of dimensions in your latent space. Sometimes adding more dropout into the layers of the generative model can help too. This was often my go to when the discriminator had an accuracy of 100% which hindered the generator from learning. 
 
-## Higher Resolution Images 
-If you want to produce data sets at a resolution higher than 32x32 pixels you will have to modify the architecture of the GAN yourself. For example, including the two `UpSampling2D()` functions in `build_generator()` will increase the size of the images to 128x128.
-
-## Sampling the latent space
-Use the generator, for an example see the [`save_imgs`](https://github.com/pearsonkyle/Neural-Nebula/blob/master/dcgan.py#L185) method
-
-## Animating the training steps
-check the directory `images/` and then use Imagemagick, gimp or ffmpeg to create a gif. For example after running the cifar_example.py cd into the `images/` directory and run the code below 
-
-`ffmpeg -framerate 3 -i "cifar10_%05d.png" cifar.gif`
-
-if that doesn't work try this: 
-
-`ffmpeg -framerate 3 -pattern_type glob -i "cifar10_*.png" cifar_bird.gif` 
+If you can think of a way to improve the image resolution and still have it train in a sensible time with 1 GPU, let me know!
