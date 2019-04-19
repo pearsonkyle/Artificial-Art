@@ -1,0 +1,4 @@
+Real time audio: https://github.com/hallidev/UnityWASAPILoopbackAudio
+
+Kaleidoscope Effect: https://github.com/keijiro/KinoMirror
+
