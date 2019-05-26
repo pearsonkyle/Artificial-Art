@@ -1,5 +1,6 @@
 from dcgan import DCGAN
 
+import argparse
 import time
 import json
 import numpy as np
@@ -131,8 +132,9 @@ def create_mosaic(img, rotation, flip):
 
     return trimg
     
-if __name__ == "__main__":
 
+
+def make_post():
     # make sure to load in the correct sized data
     dcgan = DCGAN(img_rows = 128,
                     img_cols = 128,
@@ -211,3 +213,15 @@ if __name__ == "__main__":
         )
         count += 1
         np.savetxt('count.txt',count)
+
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser()
+    help_ = "Sleep time"
+    parser.add_argument("-s", "--sleep", help=help_, default=24*60*60, type=int)
+    args = parser.parse_args()
+
+    while(True):
+        make_post() 
+        time.sleep(args.sleep)

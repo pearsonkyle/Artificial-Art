@@ -1,3 +1,4 @@
+# nohup python -u automate.py --sleep 172800 > log.txt &
 from subprocess import call
 import argparse
 import time
