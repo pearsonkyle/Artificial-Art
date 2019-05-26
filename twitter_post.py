@@ -1,5 +1,6 @@
 from dcgan import DCGAN
 
+import time
 import json
 import numpy as np
 import matplotlib.pyplot as plt
@@ -91,7 +92,7 @@ class AnimatedGif:
  
     def save(self, filename, fps=1):
         animation = anim.ArtistAnimation(self.fig, self.images)
-        animation.save(filename, writer='imagemagick', fps=fps,
+        animation.save(filename, fps=fps,
             #progress_callback = lambda i, n: print(f'Saving frame {i} of {n}')
         )
 
@@ -130,8 +131,8 @@ def create_mosaic(img, rotation, flip):
 
     return trimg
 
-if __name__ == "__main__":
-
+def make_post():
+    
     # make sure to load in the correct sized data
     dcgan = DCGAN(img_rows = 128,
                     img_cols = 128,
@@ -187,7 +188,7 @@ if __name__ == "__main__":
 
         animated_gif.add(imgs[:,i])
 
-    animated_gif.save('fluidart.mp4',fps=fps)
+    animated_gif.save('artificial_art.mp4',fps=fps)
 
     count = np.loadtxt('count.txt')
 
@@ -195,7 +196,7 @@ if __name__ == "__main__":
         hashtags = fp.readlines()
     hashtags = [hashtags[i].strip() for i in range(len(hashtags))]
 
-    message = "Automated Artificial Art v 1.{} - machine hallucinations from an artificial neural network \n \n#".format(count[0])
+    message = "Automated Artificial Art v 1.{:.1f} - machine hallucinations from an artificial neural network \n \n#".format(count[0])
     message = message + " #".join( np.random.choice(hashtags,4))
 
     with open('twitter_api_keys.json') as f: 
@@ -206,7 +207,14 @@ if __name__ == "__main__":
                     access_token_secret=data["access_secret"])
 
         api.PostUpdate(message, 
-            media="fluidart.mp4"
+            media="artificial_art.mp4"
         )
         count += 1
         np.savetxt('count.txt',count)
+
+    
+if __name__ == "__main__":
+
+    while(True):
+        make_post() 
+        time.sleep( 48*60*60 )
