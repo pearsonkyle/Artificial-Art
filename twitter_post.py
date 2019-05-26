@@ -130,9 +130,9 @@ def create_mosaic(img, rotation, flip):
     #fimg = np.hstack([ vimg, vimg[:,::-1] ])
 
     return trimg
-
-def make_post():
     
+if __name__ == "__main__":
+
     # make sure to load in the correct sized data
     dcgan = DCGAN(img_rows = 128,
                     img_cols = 128,
@@ -211,10 +211,3 @@ def make_post():
         )
         count += 1
         np.savetxt('count.txt',count)
-
-    
-if __name__ == "__main__":
-
-    while(True):
-        make_post() 
-        time.sleep( 48*60*60 )
