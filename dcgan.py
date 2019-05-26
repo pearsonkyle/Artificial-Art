@@ -1,13 +1,10 @@
-from keras.layers import Input, Dense, Reshape, Flatten, Dropout
-from keras.layers import BatchNormalization, Activation, ZeroPadding2D
-from keras.layers.advanced_activations import LeakyReLU
-from keras.layers.convolutional import UpSampling2D, Conv2D
-from keras.models import Sequential, Model
-from keras.optimizers import Adam
-from keras import backend as K
+from tensorflow.keras.layers import Input, Dense, Reshape, Flatten, Dropout, LeakyReLU
+from tensorflow.keras.layers import BatchNormalization, Activation, ZeroPadding2D, UpSampling2D, Conv2D
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras import backend as K
 import tensorflow as tf
-from tensorflow.python.tools import freeze_graph
-from tensorflow.python.tools import optimize_for_inference_lib
+
 import os
 import argparse
 import glob 
@@ -219,6 +216,9 @@ class DCGAN():
     
 
 def export_model(saver, model, model_name, input_node_names, output_node_name):
+    from tensorflow.python.tools import freeze_graph
+    from tensorflow.python.tools import optimize_for_inference_lib
+    
     if not os.path.exists('out'):
         os.mkdir('out')
 

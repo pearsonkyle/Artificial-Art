@@ -8,8 +8,6 @@ from dcgan import DCGAN, create_dataset
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    help_ = "Load h5 model trained weights"
-    parser.add_argument("-w", "--weights", help=help_) # TODO
 
     help_ = "Number of training epochs"
     parser.add_argument("-e", "--epochs", help=help_, default=101, type=int)
@@ -39,9 +37,10 @@ if __name__ == '__main__':
     dcgan = DCGAN(img_rows = x_train[0].shape[0],
                     img_cols = x_train[0].shape[1],
                     channels = x_train[0].shape[2], 
-                    latent_dim=128,
-                    name='space_128_128')
-    
-    dcgan.load_weights(generator_file="generator (space_128_128).h5", discriminator_file="discriminator (space_128_128).h5")
-                    
+                    latent_dim=256,
+                    name='space_256_128')
+    try:
+      dcgan.load_weights(generator_file="generator ({}).h5".format(dcgan.name), discriminator_file="discriminator ({}).h5".format(dcgan.name) )
+    except:
+      pass                  
     dcgan.train(x_train, epochs=args.epochs, batch_size=32, save_interval=100)
