@@ -22,74 +22,11 @@ class AnimatedGif:
  
     def add(self, images):
         imgs = []
-        for k in range(4):
-
-            ax = self.axs[0,0].imshow( images[0] )
-            self.axs[0,0].axis('off')
+        for k in range(16):
+            ax = self.axs[int(k/4.),k%4].imshow(images[k])
+            self.axs[int(k/4.),k%4].axis('off')
             imgs.append(ax)
-
-            ax = self.axs[0,1].imshow( images[1] )
-            self.axs[0,1].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[0,2].imshow( images[1][:,::-1] )
-            self.axs[0,2].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[0,3].imshow( images[0][:,::-1] )
-            self.axs[0,3].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[3,0].imshow( images[0][::-1] )
-            self.axs[3,0].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[3,1].imshow( images[1][::-1] )
-            self.axs[3,1].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[3,2].imshow( images[1][::-1,::-1] )
-            self.axs[3,2].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[3,3].imshow( images[0][::-1,::-1] )
-            self.axs[3,3].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[1,0].imshow( images[2] )
-            self.axs[1,0].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[1,1].imshow( images[3] )
-            self.axs[1,1].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[1,2].imshow( images[3][:,::-1] )
-            self.axs[1,2].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[1,3].imshow( images[2][:,::-1] )
-            self.axs[1,3].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[2,0].imshow( images[2][::-1] )
-            self.axs[2,0].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[2,1].imshow( images[3][::-1] )
-            self.axs[2,1].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[2,2].imshow( images[3][::-1,::-1] )
-            self.axs[2,2].axis('off')
-            imgs.append(ax)
-
-            ax = self.axs[2,3].imshow( images[2][::-1,::-1] )
-            self.axs[2,3].axis('off')
-            imgs.append(ax)
-
         self.images.append(imgs)
-
  
     def save(self, filename, fps=1):
         animation = anim.ArtistAnimation(self.fig, self.images)
@@ -97,7 +34,7 @@ class AnimatedGif:
             #progress_callback = lambda i, n: print(f'Saving frame {i} of {n}')
         )
 
-models = ['fluid_256_128', 'space_256_128']
+models = ['fluid_256_128', 'space_256_128', 'goodsell_256_128']
 
 def create_image(gen_imgs, name, xsize=4, ysize=4):
     
@@ -115,54 +52,36 @@ def create_image(gen_imgs, name, xsize=4, ysize=4):
     
     plt.close()
 
-def create_mosaic(img, rotation, flip):
-    rimg = rotate(img, rotation, resize=False)
-    if flip == 0:
-        trimg = rimg
-    elif flip == 1:
-         trimg = rimg[::-1]
-    elif flip == 2:
-        trimg = rimg[:,::-1]
-    elif flip == 3:
-        trimg = rimg[::-1,::-1]
-
-    #himg = np.hstack([ trimg, trimg[:,::-1] ])
-    #vimg = np.vstack([ himg, himg[::-1] ])
-    #fimg = np.hstack([ vimg, vimg[:,::-1] ])
-
-    return trimg
-    
-
 
 def make_post():
     # make sure to load in the correct sized data
     dcgan = DCGAN(img_rows = 128,
                     img_cols = 128,
                     channels = 3, 
-                    latent_dim=256,
-                    name='fluid_256_128')
+                    latent_dim=512,
+                    name='goodsell_512_128')
     
     dcgan.load_weights(generator_file="generator ({}).h5".format(dcgan.name), discriminator_file="discriminator ({}).h5".format(dcgan.name))
     
     # video settings
     fps = 30
-    maxTime = 15 # seconds
+    maxTime = 30 # seconds
     frameCount = 0
     time = 0
     nframes = int( maxTime*fps )
 
     # controls for animation
-    seed_start = np.random.normal(1, 1, (4, dcgan.latent_dim))
-    latentSpeed = np.random.normal(3, 1, (4, dcgan.latent_dim))
-    vary = np.random.normal(1, 1, (4, nframes, dcgan.latent_dim)) 
+    seed_start = np.random.normal(1, 1, (16, dcgan.latent_dim))
+    latentSpeed = np.random.normal(2, 1, (16, dcgan.latent_dim))
+    vary = np.random.normal(1, 1, (16, nframes, dcgan.latent_dim)) 
 
     # randomize image transformations
     #rhue =  np.random.random()
-    rotation = 360 * np.round(np.random.random((4,))*4)/4 # random rotation
-    flip = np.random.randint(0,4,(4,)) # 0=normal, 1=y-axis, 2=x-axis, 3=transpose 
+    #rotation = 360 * np.round(np.random.random((4,))*4)/4 # random rotation
+    #flip = np.random.randint(0,4,(4,)) # 0=normal, 1=y-axis, 2=x-axis, 3=transpose 
 
     # latent parameter animation
-    for k in range(4):
+    for k in range(16):
         time = 0
 
         # for each image in animation 
@@ -175,7 +94,7 @@ def make_post():
             time += 1./fps
 
     imgs = []
-    for k in range(4):
+    for k in range(16):
         imgs.append(
             dcgan.generator.predict(vary[k])
         )
@@ -185,12 +104,11 @@ def make_post():
     animated_gif = AnimatedGif()
     for i in range(nframes):
         
-        for k in range(4):
-            imgs[k,i] = create_mosaic( imgs[k,i], rotation[k], flip[k] )
-
         animated_gif.add(imgs[:,i])
 
     animated_gif.save('artificial_art.mp4',fps=fps)
+
+    dude() 
 
     count = np.loadtxt('count.txt')
 
@@ -222,6 +140,6 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--sleep", help=help_, default=24*60*60, type=int)
     args = parser.parse_args()
 
-    while(True):
-        make_post() 
-        time.sleep(args.sleep)
+    #while(True):
+    make_post() 
+        #time.sleep(args.sleep)

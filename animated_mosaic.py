@@ -26,9 +26,9 @@ if __name__ == "__main__":
                     img_cols = 128,
                     channels = 3, 
                     latent_dim=256,
-                    name='fluid_256_128')
+                    name='goodsell_256_128')
     
-    dcgan.load_weights(generator_file="generator ({}).h5".format(dcgan.name), discriminator_file="discriminator ({}).h5".format(dcgan.name))
+    dcgan.load_weights(generator_file="generator ({})4000.h5".format(dcgan.name), discriminator_file="discriminator ({}).h5".format(dcgan.name))
 
     # starting point for every image
     seed_start = np.random.normal(0, 1, (16, dcgan.latent_dim))
@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
         gen_imgs = dcgan.generator.predict(vary)
 
-        create_image(gen_imgs, "images/fluidart_{0:05d}.png".format(frameCount)  )
+        create_image(gen_imgs, "images/goodsell_{0:05d}.png".format(frameCount)  )
 
         frameCount += 1
         time += 1./fps
