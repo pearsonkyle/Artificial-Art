@@ -21,7 +21,7 @@ if __name__ == '__main__':
     if args is None:
       exit()
 
-    x_train, y_train = create_dataset(128, 128, nSlices=1000, resize=0.5, directory='Space/Galaxy/') # 3 channels = RGB
+    x_train, y_train = create_dataset(128, 128, nSlices=1000, resize=0.10, directory='Space/') # 3 channels = RGB
     assert(x_train.shape[0]>0)
 
     x_train /= 255 
@@ -38,7 +38,7 @@ if __name__ == '__main__':
                     img_cols = x_train[0].shape[1],
                     channels = x_train[0].shape[2], 
                     latent_dim=256,
-                    name='space_256_128')
+                    name='space2_256_128')
     try:
       dcgan.load_weights(generator_file="generator ({}).h5".format(dcgan.name), discriminator_file="discriminator ({}).h5".format(dcgan.name) )
     except:
