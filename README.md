@@ -1,10 +1,8 @@
 # Art created with artificial intelligence
 A deep convolutional generative adversarial network (DCGAN) is trained on pictures of art. Fictional machine hallucations are created from the generative neural network by sampling the latent space. Information on the neural network architecture can be found here: https://arxiv.org/abs/1511.06434
 
-
 ![](images/goodsell_animation.gif)
 
-An animated mosaic was created in Python with the pretrained fluid art model below. The video was then uploaded into Unity and further animated with audio responsive effects to control the video playback speed and camera mirroring. A video with sound can be found [here](https://www.youtube.com/watch?v=XFqTV7jrb5k) 
 
 ## Dependencies
 - [Python 3+](https://www.anaconda.com/distribution/)
