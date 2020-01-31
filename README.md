@@ -1,8 +1,6 @@
 # Art created with artificial intelligence
 A deep convolutional generative adversarial network (DCGAN) is trained on pictures of art. Fictional machine hallucations are created from the generative neural network by sampling the latent space. Information on the neural network architecture can be found here: https://arxiv.org/abs/1511.06434
 
-![](images/goodsell_animation.gif)
-
 Use the procedurally generated tiles to create mosaics
 
 ![](images/output.png)
@@ -20,16 +18,20 @@ Load a pretrained model into `animated_mosaic.py` and then run the script. Creat
 `ffmpeg -framerate 30 -i "fluidart_%05d.png" -c:v libx264 -pix_fmt yuv420p fluidart.mp4` 
 
 
-## Pre-trained Models
-I have included two pretrained models for people to play with
+## Examples
+I have included a pretrained model for generating space tiles
 
-`generator (space_128_128).h5` will create images like the one below. The images are generated from a latent parameter space of 128 dimensions and the output images will be 128 x 128. This network was trained on images of galaxies from the [NASA image archive](https://images.nasa.gov/). 
+`generator (space_128_64).h5` will create images like the one below. The images are generated from a latent parameter space of 128 dimensions and the output images will be 64 x 64. This network was trained on images of galaxies from the [NASA image archive](https://images.nasa.gov/). 
 
 ![](images/nebula.gif)
 
-`generator (fluid_256_128).h5` is a 256 dimensional model that outputs a 128 x 128 image. The algorithm was trained on pictures of fluid art. 
+`Fluid Art` - 128x128px output from a 256 dimensional latent space trained on images of acrylic pour/fluid art
 
 ![](images/fluid_neural.gif)
+
+`Goodsell` - 128x128px output from a 256 dimensional latent space trained on images from David Goodsell
+
+![](images/goodsell_animation.gif)
 
 
 ## Train your own model
