@@ -3,6 +3,12 @@ A deep convolutional generative adversarial network (DCGAN) is trained on pictur
 
 ![](images/goodsell_animation.gif)
 
+Use the procedurally generated tiles to create mosaics
+
+![](images/output.png)
+
+A high res version on Reddit can be found [here](https://www.reddit.com/r/Art/comments/evop8p/galaxy_girl_me_digital_2020/)
+
 
 ## Dependencies
 - [Python 3+](https://www.anaconda.com/distribution/)
