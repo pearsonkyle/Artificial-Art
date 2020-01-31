@@ -47,6 +47,10 @@ class DCGAN():
         self.build_combined()
         
     def build_combined(self):
+        self.discriminator.compile(loss='binary_crossentropy',
+                optimizer=self.optimizer,
+                metrics=['accuracy'])
+        
         # The generator takes noise as input and generates imgs
         z = Input(shape=(self.latent_dim,))
         img = self.generator(z)
@@ -56,7 +60,6 @@ class DCGAN():
 
         # The discriminator takes generated images as input and determines validity
         valid = self.discriminator(img)
-
         # The combined model  (stacked generator and discriminator)
         # Trains the generator to fool the discriminator
         self.combined = Model(z, valid)
@@ -68,14 +71,17 @@ class DCGAN():
             generator = self.build_generator()
             generator.load_weights(generator_file)
             self.generator = generator
+            print('generator weights loaded')
     
         if discriminator_file:
             discriminator = self.build_discriminator()
             discriminator.load_weights(discriminator_file)
             self.discriminator = discriminator
+            print('discriminator weights loaded')
 
         if generator_file or discriminator_file: 
             self.build_combined() 
+            print('build compaied ')
 
     def build_generator(self):
 
@@ -83,23 +89,27 @@ class DCGAN():
         #model.add(Dense(128, activation="relu", input_dim=self.latent_dim, name="generator_input") )
         #model.add(Dropout(0.1))
         
-        model.add(Dense(64 * 32 * 32, activation="relu", input_dim=self.latent_dim, name="generator_input") )
+        model.add(Dense(128 * 16 * 16, activation="relu", input_dim=self.latent_dim, name="generator_input") )
         model.add(Dropout(0.3))
-        model.add(Reshape((32, 32, 64)))
+        model.add(Reshape((16, 16, 128)))
         #model.add(UpSampling2D())
 
-        model.add(Conv2D(64, kernel_size=4, padding="same"))
+        model.add(Conv2D(64, kernel_size=5, padding="same"))
         model.add(BatchNormalization(momentum=0.8))
         model.add(Activation("relu"))
         model.add(Dropout(0.2))
         model.add(UpSampling2D())
         
-        model.add(Conv2D(32, kernel_size=4, padding="same"))
+        model.add(Conv2D(64, kernel_size=5, padding="same"))
         model.add(BatchNormalization(momentum=0.8))
         model.add(Activation("relu"))
         #model.add(Dropout(0.2))
         model.add(UpSampling2D())
 
+        model.add(Conv2D(32, kernel_size=4, padding="same"))
+        model.add(BatchNormalization(momentum=0.8))
+        model.add(Activation("relu"))
+        
         model.add(Conv2D(32, kernel_size=4, padding="same"))
         model.add(BatchNormalization(momentum=0.8))
         model.add(Activation("relu"))
@@ -142,10 +152,6 @@ class DCGAN():
         validity = model(img)
 
         discrim = Model(img, validity)
-
-        discrim.compile(loss='binary_crossentropy',
-            optimizer=self.optimizer,
-            metrics=['accuracy'])
 
         return discrim
 
@@ -215,7 +221,7 @@ class DCGAN():
                 cnt += 1
 
         if name:
-            fig.savefig(name, facecolor='white' )
+            fig.savefig(name, facecolor='black' )
         else: 
             fig.savefig('{}.png'.format(self.name), facecolor='black' )
 
