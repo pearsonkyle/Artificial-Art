@@ -1,11 +1,9 @@
 # Art created with artificial intelligence
-A deep convolutional generative adversarial network (DCGAN) is trained on pictures of art. Fictional machine hallucations are created from the generative neural network by sampling the latent space. Information on the neural network architecture can be found here: https://arxiv.org/abs/1511.06434
-
-Use the procedurally generated tiles to create mosaics
+A deep convolutional generative adversarial network (DCGAN) is trained on pictures of art. Fictional machine hallucations are created from the generative neural network by sampling the latent space. Information on the neural network architecture can be found here: https://arxiv.org/abs/1511.06434. Use the procedurally generated tiles to create mosaics
 
 ![](images/output.png)
 
-A high res version on Reddit can be found [here](https://www.reddit.com/r/Art/comments/evop8p/galaxy_girl_me_digital_2020/)
+A high resolution image can be found on [Reddit](https://www.reddit.com/r/Art/comments/evop8p/galaxy_girl_me_digital_2020/)
 
 
 ## Dependencies
@@ -25,14 +23,13 @@ I have included a pretrained model for generating space tiles
 
 ![](images/nebula.gif)
 
-`Fluid Art` - 128x128px output from a 256 dimensional latent space trained on images of acrylic pour/fluid art
-
-![](images/fluid_neural.gif)
-
-`Goodsell` - 128x128px output from a 256 dimensional latent space trained on images from David Goodsell
+`Goodsell` - 128x128px output from a 256 dimensional latent space trained on images from David Goodsell after 15000 training epochs
 
 ![](images/goodsell_animation.gif)
 
+`Fluid Art` - 128x128px output from a 256 dimensional latent space trained on images of acrylic pour/fluid art after 10000 training epochs
+
+![](images/fluid_neural.gif)
 
 ## Train your own model
 1. Download your favorite images to a new directory
