@@ -1,5 +1,5 @@
 # Art created with artificial intelligence
-A deep convolutional generative adversarial network (DCGAN) is trained on pictures of art. Fictional machine hallucations are created from the generative neural network by sampling the latent space. Information on the neural network architecture can be found here: https://arxiv.org/abs/1511.06434. Use the procedurally generated tiles to create mosaics
+A deep convolutional generative adversarial network (DCGAN) is trained on pictures of art. Fictional machine hallucations are created from the generative neural network by sampling the latent space. Information on the neural network architecture can be found here: https://arxiv.org/abs/1511.06434. Use the procedurally generated images to create mosaics
 
 ![](images/output.png)
 
