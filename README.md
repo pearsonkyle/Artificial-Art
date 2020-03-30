@@ -1,10 +1,7 @@
 # Art created with artificial intelligence
-A deep convolutional generative adversarial network (DCGAN) is trained on pictures of art. Fictional machine hallucations are created from the generative neural network by sampling the latent space. Information on the neural network architecture can be found here: https://arxiv.org/abs/1511.06434. Use the procedurally generated images to create mosaics
+A deep convolutional generative adversarial network (DCGAN) is trained on pictures of art. Images are procedurally created from the generative neural network by sampling the latent space. Information on the neural network architecture can be found here: https://arxiv.org/abs/1511.06434. Use the procedurally generated images to create mosaics.
 
 ![](images/output.png)
-
-A high resolution image can be found on [Reddit](https://www.reddit.com/r/Art/comments/evop8p/galaxy_girl_me_digital_2020/)
-
 
 ## Dependencies
 - [Python 3+](https://www.anaconda.com/distribution/)
