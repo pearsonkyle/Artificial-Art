@@ -20,9 +20,9 @@ I have included a pretrained model for generating space tiles
 
 ![](images/nebula.gif)
 
-`Goodsell` - 128x128px output from a 256 dimensional latent space trained on images from David Goodsell after 15000 training epochs
+Thin film inference on the surface of a bubble
 
-![](images/goodsell_animation.gif)
+![](images/bubble64_mosaic.png)
 
 `Fluid Art` - 128x128px output from a 256 dimensional latent space trained on images of acrylic pour/fluid art after 10000 training epochs
 
